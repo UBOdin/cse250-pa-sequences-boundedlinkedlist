@@ -498,7 +498,24 @@ environment
 8. Begin working on the problems requested. 
    * Note that when working on translating the rows from the csv data file, the last column of the data (when non-empty) contains a comma and should be treated as a single entry.  There may be other data entries that contain commas, as well, so be sure you think about how to handle this (look at the data set in a text editor/IntelliJ to see what the format is).
    * To check that this works, try adding print statements (`println(text)`), or by pausing the program in IntelliJ's debugger with breakpoints to check that the data is being read as you expected.
-   
+   * It is suggested to test your code via the file `DataProcessorTests`, although a `Main` class is also provided.
+     * To run the `Main` class in SBT, type `run` at the SBT prompt, or type `sbt run` from the command line
+     * To run the `Main` class in IntelliJ, right-click the `Main.scala` file and select **Run Main**
+     * To run tests in SBT type `test` at the SBT prompt, or type `sbt test` from the command line
+     * To run tests in IntelliJ, right click the folder `test` and select **Run 'ScalaTests' in 'test'...**
+   * You are welcome to add more testing functions at your discretion, both in the `Main` object and in `DataProcessorTests`.
+   * If code is not running properly, make sure your sources and tests root are set properly.  To do this, right click `src/main`, go to **Mark Directory as**, and select **Sources Root**.  Similarly, right click `src/test`, go to **Mark Directory as**, and select **Test Sources Root**.  The `main` folder should appear blue and the `test` folder should appear green if this is set up correctly.  
+
+### Allowed library/container usage
+
+* You may choose the collection classes you wish to use in your function implementation to solve these problems.
+
+## Submission
+
+For **Project 0** you will be allowed 5 submissions, without penalty.  Starting from the 6th submission, you will receive a 2 points per-submission deduction from your score on the assignment.
+
+Your score is the best score of any of your submissions.  If you receive a score and resubmit, the higher score will be used.  There is a maximum of 10 submissions.
+
 
 ## Revision History
 * Fall 2021 - Oliver Kennedy (okennedy@buffalo.edu)
