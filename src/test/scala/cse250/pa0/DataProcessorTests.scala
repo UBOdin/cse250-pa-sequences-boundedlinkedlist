@@ -22,7 +22,7 @@ class DataProcessorTests extends AnyFlatSpec {
     val headerRow = SolarInstallation.HEADERS.mkString(",")
     val splitHeaderRow = headerRow.split(',')
     val result = DataProcessor.splitArrayToRowArray(splitHeaderRow)
-    assert(result.length == 32)
+    assert(result.length == 31)
     for (i <- splitHeaderRow.indices) assert(splitHeaderRow(i) == result(i))
   }
 
@@ -30,9 +30,8 @@ class DataProcessorTests extends AnyFlatSpec {
   it should "produces an array of correct length when processing the first entry (2nd row) of dataset" in {
     val splitSecondRow = SECOND_ROW.split(',')
     val result = DataProcessor.splitArrayToRowArray(splitSecondRow)
-    assert(result.length == 32)
-    val expectedResult =
-    for (i <- expectedResult.indices) assert(result(i) == expectedResult(i))
+    assert(result.length == 31)
+    for (i <- EXPECTED_SECOND_ROW.indices) assert(result(i) == EXPECTED_SECOND_ROW(i))
   }
 
   behavior of "AssessmentDataProcessor.rowArrayToSolarInstallation"
@@ -48,10 +47,10 @@ class DataProcessorTests extends AnyFlatSpec {
   it should "correctly process the first entry (2nd row) of file" in {
     val splitSecondRow = SECOND_ROW.split(',')
     val rowArray = DataProcessor.splitArrayToRowArray(splitSecondRow)
-    assert(rowArray.length == 32)
+    assert(rowArray.length == 31)
     val result = DataProcessor.rowArrayToSolarInstallation(rowArray)
     assert(result.fields.size == SolarInstallation.REQUIRED_HEADERS.length)
-    val expectedToString = EXPECTED_SECOND_ROW.mkString(",")
+    val expectedToString = EXPECTED_SECOND_ROW_REQUIRED.mkString(",")
     assert(result.toString == expectedToString)
   }
 
@@ -88,6 +87,33 @@ class DataProcessorTests extends AnyFlatSpec {
     "No",
     "No",
     "POINT (-76.497069 42.443738)"
+  )
+  val EXPECTED_SECOND_ROW_REQUIRED = Array(
+    "07/31/2021",
+    "0000000276",
+    "Ithaca",
+    "Tompkins",
+    "NY",
+    "14850",
+    "Non-Residential",
+    "",
+    "08/02/2003",
+    "03/11/2005",
+    "Complete",
+    "Solar Works, Inc.",
+    "Fronius USA",
+    "IG 2500-LV POS",
+    "1",
+    "Sharp",
+    "NE-165U5",
+    "12",
+    "",
+    "",
+    "1.98",
+    "",
+    "No",
+    "No",
+    "No"
   )
 
 }

@@ -331,7 +331,7 @@ with the following behavior:
 
 Note that every row processed should produce a return result that contains the same 
 number of column entries as the header row for the document.  This means that each
-row, even if there are empty cells, should return an `Array` with 32 columns (even
+row, even if there are empty cells, should return an `Array` with 31 columns (even
 if some are empty strings).  **Hint:** review the documentation for the `split` 
 method for the cases where there are empty entries in a row.  **Hint**: Be mindful of
 rows that contain cells with commas (see the CSV representation rules below).
@@ -405,7 +405,7 @@ your count, as well as the column header.
 **Problem 5** *(5 points)* In the object `cse250.pa0.DataProcessor` define the
 Scala function:
 ```scala
-computeTotalExpectedKWHAnnualProduction(dataset: Array[SolarInstallation]): Int
+computeTotalExpectedKWHAnnualProduction(dataset: Array[SolarInstallation]): Float
 ``` 
 that determines the sum of the total KWH of annual expected energy production
 (corresponding to the `EXPECTED_KWH_ANNUAL_PRODUCTION` column).  Note that your 

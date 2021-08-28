@@ -27,5 +27,5 @@ object DataProcessor {
 
   def computeUniqueInverterManufacturers(dataset: Array[SolarInstallation]): Int = ???
 
-  def computeTotalExpectedKWHAnnualProduction(dataset: Array[SolarInstallation]): Int = ???
+  def computeTotalExpectedKWHAnnualProduction(dataset: Array[SolarInstallation]): Float = ???
 }
