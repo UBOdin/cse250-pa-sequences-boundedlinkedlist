@@ -3,7 +3,7 @@ package cse250.pa0
  * cse250.pa0.AssessmentDataProcessor
  *
  * Copyright 2021 Oliver Kennedy (okennedy@buffalo.edu)
- *   based on work by Andrew Hughes (ahughes6@buffalo.edu)
+ *           2021 Andrew Hughes (ahughes6@buffalo.edu)
  *
  * This work is licensed under the Creative Commons
  * Attribution-NonCommercial-ShareAlike 4.0 International License.

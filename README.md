@@ -178,12 +178,7 @@ textbook, a page number and description is sufficient.  If you copy example code
 the Scala Language API, then include the link to the class page within the API as well
 as where the example code resides.
 
-## Instructions
-
-Answer the following questions by submitting your answers to Microbase via the 
-"Programming Project 0" assignment.  Make sure your submission is committed and 
-pushed into your microbase GIT repository.  Log into Microbase and submit your 
-project.
+## Project Setup
 
 ### Supported Platforms 
 
@@ -295,12 +290,215 @@ git push -u origin main
 *If you are using IntelliJ, you may be asked if you want to import an SBT project 
 when you first open the directory.  Say yes.*
 
-This template project contains both SBT and IntelliJ workspaces. 
+This template project contains both SBT and IntelliJ project definitions.  
 
+## Instructions
+
+Answer the following questions by submitting your answers to Microbase via the
+"Programming Project 0" assignment.  Make sure your submission is committed and
+pushed into your microbase GIT repository.  Log into Microbase and submit your
+project.
+
+**Expect this project to take 8-10 hours of setting up your environment, reading 
+through documentation, and planning, coding, and testing your solution.**
 
 ### NYS Open Data - Solar Installation Sites
 
+*(30 points)*
 
+We will be making use of a public dataset released by the NYS energy department 
+(NYSERDA) of solar energy installation sites.  You can download the dataset at the 
+[NYS Open Data Portal](https://data.ny.gov/Energy-Environment/Solar-Electric-Programs-Reported-by-NYSERDA-Beginn/3x8r-34rs)
+by clicking on **Export** → **CSV**.  
+
+Your task with this dataset will be to sanitize and summarize the data file.  There 
+are a number of columns that are not of interest to us, so we will create an updated
+data file without these columns, while also obtaining some summary statistics.
+
+**Note:** Although the specific tasks you will perform in this assignment are 
+simplified to make them viable in the time allotted for the project, they are 
+representative of common data processing tasks used for data exploration, 
+visualization, and transformation, as well as for machine learning.  
+
+**Problem 1** *(15 points)*: In the object `cse250.pa0.DataProcessor` define the
+Scala function:
+```scala
+splitArrayToRowArray(rowData: Array[String]): Array[String]
+```
+with the following behavior:
+* Assume that `rowData` is the result from taking some line from the Solar Installations dataset and invoking `split(',')`.
+* Given `rowData`, place the data into an `Array` corresponding to the columns that would result from opening the original dataset file with a spreadsheet application.
+
+Note that every row processed should produce a return result that contains the same 
+number of column entries as the header row for the document.  This means that each
+row, even if there are empty cells, should return an `Array` with 32 columns (even
+if some are empty strings).  **Hint:** review the documentation for the `split` 
+method for the cases where there are empty entries in a row.  **Hint**: Be mindful of
+rows that contain cells with commas (see the CSV representation rules below).
+
+A good way to test this functionality is to ensure that the first row of the dataset,
+which contains the header, should return a copy of the row.  The second row of the
+dataset, which contains successive blank entries, should still return a row with 51 
+entries, but should have two empty values for the `ELECTRIC_UTILITY` and 
+`PURCHASE_TYPE` fields, respectively.  Feel free to add the tests provided in this 
+handout.
+
+**Problem 2** *(5 points)*: In the object `cse250.pa0.DataProcessor` define the
+Scala function:
+```scala
+rowArrayToSolarInstallation(rowArray: Array[String]): SolarInstallation
+```
+with the following behavior:
+* Assume that the input `rowArray` is an `Array` containing 51 entries, corresponding to a row that was correctly processed through `splitArrayToRowArray`.
+* Return the `SolarInstallation` object that corresponds to the data stored within the row.
+
+Note that `SolarInstallation` is only meant to hold a limited number of headers from 
+the dataset.  The headers that are required to be present are stored in the `Seq` 
+named `SolarInstallation.REQUIRED_HEADERS`.  A full list of all headers is stored
+in the `Seq` named `SolarInstallation.HEADERS`.  
+
+The required headers correspond to the following headers/columns (where column 
+number 0 corresponds to the first/left-most column): 
+
+| Column | Label
+| ------ | -----------------------------------------
+| 0      | REPORTING_PERIOD
+| 2      | PROJECT_NUMBER
+| 4      | CITY
+| 5      | COUNTY
+| 6      | STATE
+| 7      | ZIP_CODE
+| 8      | SECTOR
+| 12     | PURCHASE_TYPE
+| 13     | DATE_APPLICATION_RECEIVED
+| 14     | DATE_COMPLETED
+| 15     | PROJECT_STATUS
+| 16     | CONTRACTOR
+| 17     | PRIMARY_INVERTER_MANUFACTURER
+| 18     | PRIMARY_INVERTER_MODEL_NUMBER
+| 19     | TOTAL_INVERTER_QUANTITY
+| 20     | PRIMARY_PV_MODULE_MANUFACTURER
+| 21     | PV_MODULE_MODEL_NUMBER
+| 22     | TOTAL_PV_MODULE_QUANTITY
+| 23     | PROJECT_COST
+| 24     | INCENTIVE
+| 25     | TOTAL_NAMEPLATE_KW_DC
+| 26     | EXPECTED_KWH_ANNUAL_PRODUCTION
+| 28     | AFFORDABLE_SOLAR
+| 29     | COMMUNITY_DISTRIBUTED_GENERATION
+| 30     | GREEN_JOBS_GREEN_NEW_YORK_PARTICIPANT
+
+When you are finished, a `SolarInstallation` should contain exactly 25 entries (one
+piece of data associated with each header).  This will cause the resulting updated
+output file after running the given code to contain exactly 25 columns in each
+row.  See more on the `SolarInstallation` Objects section below.
+
+**Problem 3** *(5 points)* In the object `cse250.pa0.DataProcessor` define the
+Scala function:
+```scala
+computeUniqueInverterManufacturers(dataset: Array[SolarInstallation]): Int
+``` 
+that determines the number of unique Inverter Manufacturers (corresponding to the
+`PRIMARY_INVERTER_MANUFACTURER` column).  You should ignore any empty entry from
+your count, as well as the column header.
+
+**Problem 5** *(5 points)* In the object `cse250.pa0.DataProcessor` define the
+Scala function:
+```scala
+computeTotalExpectedKWHAnnualProduction(dataset: Array[SolarInstallation]): Int
+``` 
+that determines the sum of the total KWH of annual expected energy production
+(corresponding to the `EXPECTED_KWH_ANNUAL_PRODUCTION` column).  Note that your 
+answer produced should make sense, so you should assume that the energy produced
+should be positive.  If no valid data is found, you should return 0.
+
+
+### `SolarInstallation` Objects
+
+To represent a single data record, you must use the structure 
+`cse250.objects.SolarInstallation` provided in the code skeleton.  
+```scala
+/**
+ * One specific solar installation site.
+ */
+class SolarInstallation
+{
+  /**
+   * Key-value pairs representing data about the solar site.  See [[SolarInstallation.HEADERS]] for a list of
+   * allowable keys, and [[SolarInstallation.REQUIRED_HEADERS]] for a list of mandatory keys.
+   */
+  val fields: mutable.Map[String, String] = new mutable.HashMap[String, String]
+```
+
+Note that the file containing `SolarInstallation` will be overwritten when your 
+code is graded, so any changes you make within will be reverted.  
+
+The information stored within a `SolarInstallation` should be stored in the `fields`
+attribute, which stores (**key** → **value**) pairs, where the header for the column
+(**value** in the respective column in the first row) is the **key** and the value 
+is the data found within the row in the corresponding column.  For example, the 
+first installation (second row of the file) should be loaded as 
+
+| Key                                     | Value        |
+| --------------------------------------- | ------------ |
+| `REPORTING_PERIOD`                      | `07/31/2021` |
+| `PROJECT_NUMBER`                        | `0000000276` |
+| `CITY`                                  | `Ithaca`     |  
+|                   ...                                 ||
+| `GREEN_JOBS_GREEN_NEW_YORK_PARTICIPANT` | `No`         |
+
+Note that the value for `ELECTRIC_UTILITY` is simply an empty string, and there 
+should be an entry for every header.  
+
+### CSV Formatting
+
+The formatting for the data file is CSV (comma-separated values).  CSV files are a 
+way to represent columns of data by separating entries within a row by a comma. Each 
+line represents a separate row of cells.  Two special cases arise that you must 
+handle:
+* If a cell contains a comma (`,`) within, the cell contents are enclosed in double quotes (`"`) at the start and end.  For example: `Comma, Cell` would be stored as `"Comma, Cell"`.
+* If a cell contains a double quote (`"`) within, the cell contents are enclosed in double quotes (`"`) at the start and end, **and** each double quote in the cell data is duplicated.  For example, `The "Best" Around` would be stored as `"The ""Best"" Around"`
+
+It is also possible that a cell contains both.  Note that if a data file contained the line
+```text
+First Cell,Second Cell,"The ""Best"" Around","Comma, Cell","""Object-Orientation, Abstraction, and Data Structures Using Scala"""
+```
+It would correspond to the following cells (e.g., if opened in Excel):
+
+| 1          | 2           | 3                 | 4           | 5                                                                  | 
+| ---------- | ----------- | ----------------- | ----------- | ------------------------------------------------------------------ |
+| First Cell | Second Cell | The "Best" Around | Comma, Cell | "Object-Orientation, Abstraction, and Data Structures Using Scala" |  
+
+### Suggested Approach
+
+Set up your microbase repository as detailed above and set up your programming 
+environment
+
+#### SBT
+
+1. There are three files in the `src` directory.  Open them with your code editor of choice.
+2. Launch sbt by navigating to the root of your project directory in a terminal window and typing `sbt`.
+3. Set up continuous compilation by typing `~compile` at the sbt prompt. 
+
+#### IntelliJ
+
+1. Open IntelliJ
+2. Select Open (possibly File → Open).
+3. Navigate the the directory you checked out above.  Click OK
+4. Confirm the request to import an SBT project if prompted.
+5. Open `Main.scala` (src → main → scala → cse250 → pa0).  Test that the code builds properly by right-clicking Main →Run "Main".  If it ran correctly, you should see one of the following two errors
+   * `Exception in thread "main" scala.NotImplementedError: an implementation is missing`
+   * `Exception in thread "main" java.io.FileNotFoundException: data/Solar_Electric_Programs_Reported_by_NYSERDA__Beginning_2000.csv  (No such file or directory)`
+6. Download the Solar Installations dataset and move it to the `project-0/data` directory.
+   * The data file can then be opened by the filename `data/Solar_Electric_Programs_Reported_by_NYSERDA__Beginning_2000.csv`
+   * I recommend you make a smaller test file of entries to work on.  To do this, make a copy of the solar installations file and then remove all of the lines after the first 10 or 100, etc..., and then save the file.
+   * **It is not recommended to make modifications to the file in Excel as there may be unintended formatting side-effects upon saving.**
+   * If viewing the `.csv` file in IntelliJ, I recommend **not** installing the plugin so you can continue viewing it as text, instead of the view that would be provided by software like Excel.  This is beneficial so you can see how the data you are manipulating looks.
+7. Update the copyright statements in the necessary files with your name and UBIT.
+8. Begin working on the problems requested. 
+   * Note that when working on translating the rows from the csv data file, the last column of the data (when non-empty) contains a comma and should be treated as a single entry.  There may be other data entries that contain commas, as well, so be sure you think about how to handle this (look at the data set in a text editor/IntelliJ to see what the format is).
+   * To check that this works, try adding print statements (`println(text)`), or by pausing the program in IntelliJ's debugger with breakpoints to check that the data is being read as you expected.
+   
 
 ## Revision History
 * Fall 2021 - Oliver Kennedy (okennedy@buffalo.edu)
