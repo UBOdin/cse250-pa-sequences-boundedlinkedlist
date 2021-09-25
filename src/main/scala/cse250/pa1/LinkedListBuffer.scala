@@ -1,4 +1,3 @@
-package cse250.pa1
 /**
  * cse250.pa1.LinkedListBuffer
  *
@@ -17,13 +16,15 @@ package cse250.pa1
  * Collaborators (include UBIT name of each, comma separated):
  * UBIT:
  */
+package cse250.pa1
 
-import scala.reflect.ClassTag
-
-class LinkedListBuffer[A <: Any](capacity: Int)(implicit tag: ClassTag[A])
-  extends Seq[A]
+class LinkedListBuffer[A](capacity: Int)
+  extends scala.collection.mutable.Seq[A]
 {
   val _buffer = new Array[LinkedListNode](size)
+  var _numStored = 0
+  var _head = -1
+  var _tail = -1
 
   /**
    * Append an entry into the sequence, displacing the oldest entry if needed.
@@ -37,8 +38,11 @@ class LinkedListBuffer[A <: Any](capacity: Int)(implicit tag: ClassTag[A])
    * Data may only be stored in `_buffer`.  Your solution may not use any other
    * collection types.
    * 
-   * This function must run in Θ(1) time (assume that all times are 
-   * non-amortized unless otherwise specified).  
+   * This function must run in O(n) time, where n = [[length]].
+   * 
+   * 2 bonus points will be awarded if this function runs in Θ(1) time 
+   * 
+   * (assume that all times are non-amortized unless otherwise specified).
    */
   def append(entry: A): Option[A] = ???
 
@@ -54,19 +58,6 @@ class LinkedListBuffer[A <: Any](capacity: Int)(implicit tag: ClassTag[A])
    * This function must run in O(n) time, where n = [[length]] 
    */
   def remove(entry: A): Boolean = ???
-
-  /**
-   * Return an iterator over the elements of this sequence
-   * @return                An iterator over the elements of this sequence
-   * 
-   * Iteration should proceed in order of insertion.  The first element to be
-   * [[append]]ed should be the first element the iterator visits.  The most
-   * recent element to be [[append]]ed should be the last element the iterator 
-   * visits
-   * 
-   * This function must run in Θ(1) time.
-   */
-  override def iterator: Iterator[A] = ???
 
   /**
    * Return the current length of the sequence
@@ -116,11 +107,25 @@ class LinkedListBuffer[A <: Any](capacity: Int)(implicit tag: ClassTag[A])
    */
   def update(idx: Int, elem: A): Unit = ???
 
+  /**
+   * Return an iterator over the elements of this sequence
+   * @return                An iterator over the elements of this sequence
+   * 
+   * Iteration should proceed in order of insertion.  The first element to be
+   * [[append]]ed should be the first element the iterator visits.  The most
+   * recent element to be [[append]]ed should be the last element the iterator 
+   * visits
+   * 
+   * This function must run in Θ(1) time.
+   */
+  override def iterator: Iterator[A] =
+    new LinkedListIterator()
+
 
   /**
    * One node of a linked list.
    */
-  class LinkedListNode(var _data: A)
+  class LinkedListNode(var _value: A)
   {
     /**
      * A reference (pointer) to the position in `_buffer` where the preceding
@@ -142,17 +147,39 @@ class LinkedListBuffer[A <: Any](capacity: Int)(implicit tag: ClassTag[A])
    */
   class LinkedListIterator extends Iterator[A]
   {
+    var _curr = _head
+
     /**
      * Return true if there are additional elements in this iterator, or 
      * false if the iterator has no further elements.
+     * @return        True if next() will return another element.
+     * 
      */
-    override def hasNext: Boolean = ???
+    override def hasNext: Boolean = { _curr == -1 }
 
     /**
      * Return the next element of the iterator, and advance the iterator to 
      * the following position.
+     * @return        The sequentially next element from the sequence
+     * 
+     * This method may throw a [[NoSuchElementException]] if it is called
+     * hasNext() returns false.
      */
-    override def next(): A = ???
+    override def next(): A = { 
+      if(_curr == -1){ throw new NoSuchElementException() }
+      
+      val currentElement = _buffer(_curr)
+      _curr = currentElement._next
+      return currentElement._value
+    }
+
+    /**
+     * Remove the last element returned by [[next]] from the underlying list.
+     * 
+     * This method must throw a [[NoSuchElementException]] if it is called
+     * before [[next]] is called for the first time on this iterator.
+     */
+    def remove(): Unit = ???
   }
 
 }
