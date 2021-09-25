@@ -121,6 +121,12 @@ class LinkedListBuffer[A](capacity: Int)
   override def iterator: Iterator[A] =
     new LinkedListIterator()
 
+  /**
+   * Render a graphical representation of the list
+   */
+  override def toString(): String = 
+    iterator.map { "[" + _ + "]" }.mkString(" ↔ ")
+
 
   /**
    * One node of a linked list.
