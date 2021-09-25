@@ -24,6 +24,7 @@ object Main {
       val element = new SolarInstallation()
       exampleElements(i) = element
       element.fields(SolarInstallation.REQUIRED_HEADERS(0)) = i.toString
+      for(j <- SolarInstallation.REQUIRED_HEADERS.drop(1)){ element.fields(j) = "" }
     }
 
     var numLines = 5
