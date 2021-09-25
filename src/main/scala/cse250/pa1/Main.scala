@@ -22,6 +22,7 @@ object Main {
     val exampleElements = new Array[SolarInstallation](10);
     for(i <- 0 until exampleElements.size){
       val element = new SolarInstallation()
+      exampleElements(i) = element
       element.fields(SolarInstallation.REQUIRED_HEADERS(0)) = i.toString
     }
 
