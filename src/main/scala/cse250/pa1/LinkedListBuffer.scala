@@ -155,6 +155,11 @@ class LinkedListBuffer[A](capacity: Int)
      * Clear the value in this node
      */
     def clear = { _value = None }
+
+    /**
+     * Get the current node value (if set)
+     */
+    def get = { _value.get }
   }
 
   /**
