@@ -239,9 +239,11 @@ that we can use this with the `SolarInstallation` class.
 
 You must maintain a "linked list" of entries stored in `_buffer` of your 
 `LinkedListBuffer`.  The nodes of the list are stored within the array as 
-`LinkedListNode` objects.  A `LinkedListNode` contains a `_value` of type `A`, 
-and indices for `prev` and `next` of type `Int`.  For an empty node, you should 
-use the value `null`.  
+`LinkedListNode` objects.  A `LinkedListNode` contains a `_value` of type 
+`Option[A]`, which may be either `None` if the node is not assigned, or `Some`
+if the node is in-use.  `_value.get` will return the value of the node if it is
+assigned.  You may use `_value.isDefined` to test whether the node has a value.
+The `LinkedListNode` also has indices for `prev` and `next` of type `Int`.  
 
 You should keep in mind the following pointers while maintaining your embedded 
 linked list:
@@ -280,10 +282,10 @@ code.
 
 <table>
   <tr>
-    <th colspan=2>null</th>
-    <th colspan=2>null</th>
-    <th colspan=2>null</th>
-    <th colspan=2>null</th>
+    <th colspan=2>None</th>
+    <th colspan=2>None</th>
+    <th colspan=2>None</th>
+    <th colspan=2>None</th>
   </tr>
   <tr>
     <td></td>
@@ -309,10 +311,10 @@ This represents an empty list, internally.
 
 <table>
   <tr>
-    <th colspan=2>e1</th>
-    <th colspan=2>null</th>
-    <th colspan=2>null</th>
-    <th colspan=2>null</th>
+    <th colspan=2>Some(e1)</th>
+    <th colspan=2>None</th>
+    <th colspan=2>None</th>
+    <th colspan=2>None</th>
   </tr>
   <tr>
     <td>-1</td>
@@ -338,10 +340,10 @@ This corresponds to the list `Seq( e1 )`
 
 <table>
   <tr>
-    <th colspan=2>e1</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>null</th>
-    <th colspan=2>null</th>
+    <th colspan=2>Some(e1)</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>None</th>
+    <th colspan=2>None</th>
   </tr>
   <tr>
     <td>-1</td>
@@ -367,10 +369,10 @@ This corresponds to the list `Seq( e1, e2 )`, stored as `[e1]` ↔ `[e2]`
 
 <table>
   <tr>
-    <th colspan=2>e1</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>e3</th>
-    <th colspan=2>null</th>
+    <th colspan=2>Some(e1)</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>Some(e3)</th>
+    <th colspan=2>None</th>
   </tr>
   <tr>
     <td>-1</td>
@@ -397,10 +399,10 @@ stored as `[e1]` ↔ `[e2]` ↔ `[e3]`
 
 <table>
   <tr>
-    <th colspan=2>e1</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>e3</th>
-    <th colspan=2>e4</th>
+    <th colspan=2>Some(e1)</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>Some(e3)</th>
+    <th colspan=2>Some(e4)</th>
   </tr>
   <tr>
     <td>-1</td>
@@ -427,10 +429,10 @@ stored as `[e1]` ↔ `[e2]` ↔ `[e3]` ↔ `[e4]`
 
 <table>
   <tr>
-    <th colspan=2>e3</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>e3</th>
-    <th colspan=2>e4</th>
+    <th colspan=2>Some(e3)</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>Some(e3)</th>
+    <th colspan=2>Some(e4)</th>
   </tr>
   <tr>
     <td>3</td>
@@ -460,10 +462,10 @@ Note the changes to `_head` and `_tail`.
 
 <table>
   <tr>
-    <th colspan=2>null</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>null</th>
-    <th colspan=2>e4</th>
+    <th colspan=2>None</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>None</th>
+    <th colspan=2>Some(e4)</th>
   </tr>
   <tr>
     <td></td>
@@ -492,10 +494,10 @@ Note the changes to `_head` and `_tail`.
 
 <table>
   <tr>
-    <th colspan=2>null</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>e5</th>
-    <th colspan=2>e4</th>
+    <th colspan=2>None</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>Some(e5)</th>
+    <th colspan=2>Some(e4)</th>
   </tr>
   <tr>
     <td></td>
@@ -525,10 +527,10 @@ stored as `[e2]` ↔ `[e4]` ↔ `[e5]`.
 
 <table>
   <tr>
-    <th colspan=2>null</th>
-    <th colspan=2>e2</th>
-    <th colspan=2>e5</th>
-    <th colspan=2>null</th>
+    <th colspan=2>None</th>
+    <th colspan=2>Some(e2)</th>
+    <th colspan=2>Some(e5)</th>
+    <th colspan=2>None</th>
   </tr>
   <tr>
     <td></td>

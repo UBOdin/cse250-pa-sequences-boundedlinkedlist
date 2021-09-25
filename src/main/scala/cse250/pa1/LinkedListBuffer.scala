@@ -21,7 +21,7 @@ package cse250.pa1
 class LinkedListBuffer[A](capacity: Int)
   extends scala.collection.mutable.Seq[A]
 {
-  val _buffer = new Array[LinkedListNode](size)
+  val _buffer = Array.fill[LinkedListNode](capacity) { new LinkedListNode(None) }
   var _numStored = 0
   var _head = -1
   var _tail = -1
@@ -125,7 +125,7 @@ class LinkedListBuffer[A](capacity: Int)
   /**
    * One node of a linked list.
    */
-  class LinkedListNode(var _value: A)
+  class LinkedListNode(var _value: Option[A])
   {
     /**
      * A reference (pointer) to the position in `_buffer` where the preceding
@@ -140,6 +140,21 @@ class LinkedListBuffer[A](capacity: Int)
      * of the sequence.
      */
     var _next: Int = -1
+
+    /**
+     * Return true if the linked list node is in-use
+     */
+    def isSet = _value.isDefined
+
+    /**
+     * Assign a value to this node
+     */
+    def set(value: A) = { _value = Some(value) }
+
+    /**
+     * Clear the value in this node
+     */
+    def clear = { _value = None }
   }
 
   /**
@@ -170,7 +185,7 @@ class LinkedListBuffer[A](capacity: Int)
       
       val currentElement = _buffer(_curr)
       _curr = currentElement._next
-      return currentElement._value
+      return currentElement._value.get
     }
 
     /**
