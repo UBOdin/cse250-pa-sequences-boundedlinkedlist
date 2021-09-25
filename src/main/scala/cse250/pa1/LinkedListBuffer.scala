@@ -181,7 +181,7 @@ class LinkedListBuffer[A](capacity: Int)
      * @return        True if next() will return another element.
      * 
      */
-    override def hasNext: Boolean = { _curr == -1 }
+    override def hasNext: Boolean = { _curr > -1 }
 
     /**
      * Return the next element of the iterator, and advance the iterator to 
