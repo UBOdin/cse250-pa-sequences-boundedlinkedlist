@@ -169,7 +169,7 @@ additional methods as follows.  Note that these are implemented using a generic
 type `A`.  If you look at the provided tests and the main method, you will see
 that we can use this with the `SolarInstallation` class.
 
-##### `insert(entry: A): Unit`
+##### `append(entry: A): Unit`
 * Record `entry` into your data store.
     * The newest entry mut always be stored at the end (tail) of the sequence
     * Any available slot (empty node) in your backing storage array may be used
