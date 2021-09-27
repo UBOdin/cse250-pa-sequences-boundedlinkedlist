@@ -169,7 +169,7 @@ additional methods as follows.  Note that these are implemented using a generic
 type `A`.  If you look at the provided tests and the main method, you will see
 that we can use this with the `SolarInstallation` class.
 
-##### `append(entry: A): Unit`
+##### `append(entry: A): Option[A]`
 * Record `entry` into your data store.
     * The newest entry mut always be stored at the end (tail) of the sequence
     * Any available slot (empty node) in your backing storage array may be used
@@ -180,6 +180,7 @@ that we can use this with the `SolarInstallation` class.
   the oldest entry (the head) with `entry`.  
     * This would make the second oldest entry the new oldest (the new head)
     * This would still make `entry` the newest entry (the new tail)
+    * If an entry is replaced, you should return the replaced entry, otherwise return `None`.
 * Duplicate entries are OK.  We only care about storing them in sequence of 
   oldest to newest (based on insertion order).
 * The runtime of this function must be O(capacity) (i.e., linear in the maximum
