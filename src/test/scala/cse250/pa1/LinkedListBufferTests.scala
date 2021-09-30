@@ -74,7 +74,7 @@ class LinkedListBufferTests extends AnyFlatSpec {
       assert(e3 == iterator.next())
       assert(iterator.hasNext)
       assert(e4 == iterator.next())
-      assert(iterator.hasNext)
+      assert(!iterator.hasNext)
     }
 
   }
