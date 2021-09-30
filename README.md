@@ -208,8 +208,15 @@ that we can use this with the `SolarInstallation` class.
 * The runtime of this function must be O(length) (i.e., linear in the number of 
   elements currently in the sequence)
 
+##### `apply(idx: Int): A`
+* Return the value of the entry at index `idx` within the sequence (0-based indexing)
+* Required by `mutable.Seq`
+* The runtime of this function must be O(idx) (i.e., linear in the index being
+  retrieved).
+
+
 ##### `update(idx: Int, elem: A): Int`
-* Update the entry at index `idx` to be equal to  `elem` within the sequence (0-based indexing)
+* Update the entry at index `idx` within the sequence (0-based indexing) to be  `elem`
 * Required by `mutable.Seq`
 * The runtime of this function must be O(idx) (i.e., linear in the index being
   retrieved).
