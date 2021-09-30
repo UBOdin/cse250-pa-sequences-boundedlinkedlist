@@ -1,8 +1,8 @@
 # Project 1: Sequences
 
-**Part 1 Due: Wednesday 10/13/21 Before 5:00 PM**
+**Part 1 Due: Wednesday 10/13/21 Before 5:00 PM (10 points)**
 
-**Part 2 Due: Wednesday 10/20/21 Before 5:00 PM**
+**Part 2 Due: Wednesday 10/20/21 Before 5:00 PM (20 points + up to 5 bonus points)**
 
 **Total Points = 30**
 
@@ -169,7 +169,7 @@ additional methods as follows.  Note that these are implemented using a generic
 type `A`.  If you look at the provided tests and the main method, you will see
 that we can use this with the `SolarInstallation` class.
 
-##### `insert(entry: A): Unit`
+##### `append(entry: A): Option[A]`
 * Record `entry` into your data store.
     * The newest entry mut always be stored at the end (tail) of the sequence
     * Any available slot (empty node) in your backing storage array may be used
@@ -180,6 +180,7 @@ that we can use this with the `SolarInstallation` class.
   the oldest entry (the head) with `entry`.  
     * This would make the second oldest entry the new oldest (the new head)
     * This would still make `entry` the newest entry (the new tail)
+    * If an entry is replaced, you should return the replaced entry, otherwise return `None`.
 * Duplicate entries are OK.  We only care about storing them in sequence of 
   oldest to newest (based on insertion order).
 * The runtime of this function must be O(capacity) (i.e., linear in the maximum
@@ -207,8 +208,15 @@ that we can use this with the `SolarInstallation` class.
 * The runtime of this function must be O(length) (i.e., linear in the number of 
   elements currently in the sequence)
 
+##### `apply(idx: Int): A`
+* Return the value of the entry at index `idx` within the sequence (0-based indexing)
+* Required by `mutable.Seq`
+* The runtime of this function must be O(idx) (i.e., linear in the index being
+  retrieved).
+
+
 ##### `update(idx: Int, elem: A): Int`
-* Update the entry `entry` at index `idx` within the sequence (0-based indexing)
+* Update the entry at index `idx` within the sequence (0-based indexing) to be  `elem`
 * Required by `mutable.Seq`
 * The runtime of this function must be O(idx) (i.e., linear in the index being
   retrieved).
