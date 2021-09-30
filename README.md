@@ -209,7 +209,7 @@ that we can use this with the `SolarInstallation` class.
   elements currently in the sequence)
 
 ##### `update(idx: Int, elem: A): Int`
-* Update the entry `entry` at index `idx` within the sequence (0-based indexing)
+* Update the entry at index `idx` to be equal to  `elem` within the sequence (0-based indexing)
 * Required by `mutable.Seq`
 * The runtime of this function must be O(idx) (i.e., linear in the index being
   retrieved).
