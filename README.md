@@ -22,6 +22,7 @@ syntax.  You will also want to read the Scala references provided below:
 
 * [The Scala API](https://www.scala-lang.org/api/current/index.html)
   * [Scala Collections](https://docs.scala-lang.org/overviews/collections-2.13/introduction.html)
+* [ScalaTest Docs](https://www.scalatest.org/)
 
 Relevant textbook sections:
 * Nature of Arrays / Nature of Lists - § 12.2, 12.3 p406-408
