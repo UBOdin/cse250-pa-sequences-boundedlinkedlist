@@ -118,7 +118,7 @@ class LinkedListBuffer[A](capacity: Int)
    * 
    * This function must run in Θ(1) time.
    */
-  override def iterator: Iterator[A] =
+  override def iterator: LinkedListIterator =
     new LinkedListIterator()
 
   /**
